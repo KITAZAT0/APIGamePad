@@ -1,0 +1,137 @@
+1 - création du dossier de l'application
+
+mkdir myApp
+
+2 - changement de dossier
+
+cd myApp
+
+3 - initialisation du projet Node (sans question)
+
+npm init -yes
+
+4 - installer le Framework express,mySql, and body-parser
+
+$ npm install express --save (Express Framework)
+
+$ npm install mysql --save (connection à la bdd)
+
+$ npm install body-parser (Il s'agit d'un middleware node.js pour le traitement JSON, Raw, Text and URL encoded form data.)
+
+5 - Initialisation du serveur
+
+$ npm install -dev nodemon --save
+
+nodemon nous aidera à garder une trace des modifications apportées à notre application en surveillant les fichiers modifiés et en redémarrant automatiquement le serveur.
+
+6 - nouveau fichier
+
+fc > index.js ("powershell" création d'un fichier nommé index avec l'extention js)
+
+7 - information de connexion sur l'api
+
+var express = require('express'),
+app = express(),port = process.env.PORT || 3000;
+app.listen(port);
+console.log('todo list RESTful API server started on: ' + port);
+
+L’application fonctionnera sur le port fourni au démarrage du serveur MySQL.
+A faire: Vous devez avoir MySQL sur votre machine et un logiciel d’utilisation comme mySQL Community Edition. (dans mon cas j'ai xampp)
+
+8 - creation de la bdd API
+
+dans phpmyadmin créer une table avec 
+
+CREATE TABLE IF NOT EXISTS `tasks` (
+    `id` int(11) NOTNULL,
+    `task` varchar(200) NOTNULL,
+    `status` tinyint(1) NOTNULL DEFAULT'1',
+    `created_at` datetime NOTNULL DEFAULTCURRENT_TIMESTAMP);
+
+    ALTER TABLE`tasks` ADD PRIMARY KEY(`id`);
+    ALTER TABLE`tasks` MODIFY`id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+dans phpmyadmin insertion dans la table des données avec 
+
+INSERT INTO `tasks`(`id`, `task`, `status`, `created_at`)
+VALUES(
+    1,
+    'Find bugs',
+    1,
+    '2020-09-29 11:00:00'
+),(
+    2,
+    'Review code',
+    1,
+    '2020-09-29 11:00:00'
+),(
+    3,
+    'Fix bugs',
+    1,
+    '2020-09-29 11:00:00'
+),(
+    4,
+    'Refactor Code',
+    1,
+    '2020-09-29 11:00:00'
+),(
+    5,
+    'Push to prod',
+    1,
+    '2020-09-29 11:00:00'
+)
+
+9 - Mise à jour des routes:
+
+Le routage consiste à déterminer comment une application répond à une demande client via un terminal. 
+La requête comprend l’URI et une méthode de requête HTTP spécifique (GET, POST, PUT, PATCH, DELETE)
+Chacun de nos chemins est relié à une méthode qui est exécutée à la demande.
+Nous définissons ci-dessous deux routes de base
+/tasks
+/tasks/taskId
+Avec deux méthodes:
+/tasks a deux méthodes (GET and POST),
+/tasks/taskId en a trois(GET, PUT and DELETE).
+
+code relatif:
+
+'use strict';
+
+module.exports = function (app) {
+    vartodoList = require('../controller/appController.js');
+
+    //todoListRoutes
+    app.route('/tasks')
+        .get(todoList.list_all_tasks)
+        .post(todoList.create_a_task);
+    app.route('/tasks/:taskId')
+        .get(todoList.read_a_task)
+        .put(todoList.update_a_task)
+        .delete(todoList.delete_a_task);
+};
+
+10 - Connexion à la base de donnée:
+
+code relatif:
+
+'user strict';
+
+var mysql = require('mysql');
+var con = mysql.createConnection({ host: "localhost", user: "root", password: "", database: 'apidb' });
+
+con.connect(function (err) {
+    if (err) throw err;
+    console.log('connected');
+});
+
+module.exports = con;
+
+11 - Mise à jour du model:
+
+Les objets créés sont des objets Task, ils offrent des fonctions telles que:
+la création d'une nouvelle tâche, 
+l'obtention de toutes les tâches, 
+l'obtention des tâches par identifiant,
+la mise à jour des tâches par identifiant,
+la suppression des tâches par identifiant.
