@@ -254,3 +254,31 @@ exports.delete_a_task = function (req, res) {
 };
 
 code minimal serveur opérationnel
+
+13 - connecter nos contrôleurs, la base de données, les modèles créés, et les routes.
+
+code relatif:
+
+const express = require('express'),
+    app = express(),
+    bodyParser = require('body-parser');
+port = process.env.PORT || 3000;
+
+app.listen(port);
+
+console.log('API server started on:' + port);
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+var routes = require('./app/routes/approutes');//importing route
+routes(app);//register the 
+
+14 - Démarrer mySQL.
+
+Lancer votre serveur node:
+
+$ npx nodemon server
+
+Cela démarrera le serveur et toute modification apportée au code redémarrera le serveur
+Ou ($ node index.js, ceci démarrera le serveur en utilisant directement node)
