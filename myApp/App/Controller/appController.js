@@ -1,16 +1,19 @@
-'usestrict';
+'use strict'; //fonctions qui serviront à nos routes
+// les fonctions ici utilsent les methodes task de appModel.js
 
 var Task = require('../model/appModel.js');
 
 exports.list_all_tasks = function (req, res) {
     Task.getAllTask(function (err, task) {
         console.log('controller')
-        if (err) res.send(err); console.log('res', task); res.send(task);
+        if (err) res.send(err);
+        console.log('res', task); res.send(task);
     });
 };
 
 exports.create_a_task = function (req, res) {
-    varnew_task = newTask(req.body);
+    //console.log(req.body);
+    var new_task = new Task(req.body);
 
     //handlesnullerror
     if (!new_task.task || !new_task.status) {
@@ -25,18 +28,21 @@ exports.create_a_task = function (req, res) {
 
 exports.read_a_task = function (req, res) {
     Task.getTaskById(req.params.taskId, function (err, task) {
-        if (err) res.send(err); res.json(task);
+        if (err) res.send(err);
+        res.json(task);
     });
 };
 
 exports.update_a_task = function (req, res) {
-    Task.updateById(req.params.taskId, newTask(req.body), function (err, task) {
-        if (err) res.send(err); res.json(task);
+    Task.updateById(req.params.taskId, new Task(req.body), function (err, task) {
+        if (err) res.send(err);
+        res.json(task);
     });
 };
 
 exports.delete_a_task = function (req, res) {
     Task.remove(req.params.taskId, function (err, task) {
-        if (err) res.send(err); res.json({ message: 'Task success fully deleted' });
+        if (err) res.send(err);
+        res.json({ message: 'Task success fully deleted' });
     });
 };

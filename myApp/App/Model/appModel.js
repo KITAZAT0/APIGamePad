@@ -1,4 +1,4 @@
-'user strict';
+'user strict'; //fichier qui gère les requetes à la bdd
 
 var sql = require('./db.js');
 
@@ -6,16 +6,19 @@ var sql = require('./db.js');
 var Task = function (task) {
     this.task = task.task;
     this.status = task.status;
-    this.created_at = newDate();
+    this.created_at = new Date();
 };
 
+// méthode createtask
 Task.createTask = function (newTask, result) {
 
-    sql.query("INSERT INTO tasks set?", newTask, function (err, res) {
+    sql.query("INSERT INTO tasks set ?", newTask, function (err, res) {
         if (err) {
-            console.log("error:", err); result(err, null);
+            console.log("error:", err);
+            result(err, null);
         } else {
-            console.log(res.insertId); result(null, res.insertId);
+            console.log(res.insertId);
+            result(null, res.insertId);
         }
     });
 };
@@ -54,7 +57,7 @@ Task.updateById = function (id, task, result) {
     });
 };
 Task.remove = function (id, result) {
-    sql.query("DELETE FROM tasks WHERE id=?", [id], function (err, res) {
+    sql.query("DELETE FROM tasks WHERE id = ?", [id], function (err, res) {
         if (err) {
             console.log("error:", err);
             result(null, err);

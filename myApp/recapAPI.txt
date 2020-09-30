@@ -1,3 +1,5 @@
+Création d'une API Rest Node
+
 1 - création du dossier de l'application
 
 mkdir myApp
@@ -282,3 +284,8 @@ $ npx nodemon server
 
 Cela démarrera le serveur et toute modification apportée au code redémarrera le serveur
 Ou ($ node index.js, ceci démarrera le serveur en utilisant directement node)
+
+15 - dans postman
+
+http://localhost:3000/tasks me donne la liste complete
+
