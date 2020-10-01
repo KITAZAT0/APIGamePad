@@ -1,0 +1,51 @@
+1 - Start basé sur https://auth0.com/blog/node-js-and-express-tutorial-building-and-securing-restful-apis/
+
+création de l'api dans le tableau de bord de Auth0 (sur le site web: https://manage.auth0.com/dashboard/eu/apigamepad/apis)
+
+2 - bibliotheques supplémentaires
+
+$ npm i express-jwt jwks-rsa
+
+express-jwt: Middleware qui valide les jetons Web JSON (JWT) et définit le req.useravec ses attributs.
+jwks-rsa: Bibliothèque pour récupérer les clés publiques RSA à partir d'un point de terminaison JWKS (JSON Web Key Set).
+
+3 - importations des bibliotheques dans le projet dans l'index.js
+
+const jwt = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
+
+4 - juste avant les routes (post) dans index.js (attention à reverif car pas certain)
+
+code relatif:
+
+const checkJwt = jwt({
+    secret: jwksRsa.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: `https://apigamepad.eu.auth0.com/.well-known/jwks.json` // nom de domaine au moment de la création du compte: https://apigamepad.eu.auth0.com/
+    }),
+
+    // Validate the audience and the issuer.
+    audience: 'https://GamePad-API', // fait dans le formulaire du site auth0
+    issuer: `https://apigamepad.eu.auth0.com/`, //nom de domaine au moment de la création du compte
+    algorithms: ['RS256']
+});
+
+5 - ajout de l'evaluation
+
+routes(app); devient routes(app.use(checkJwt));
+
+var request = require('request');
+var options = {
+  'method': 'GET',
+    'url': 'http://localhost:3000/tasks/1',
+      'headers': {
+        }
+        };
+        request(options, function (error, response) {
+          if (error) throw new Error(error);
+            console.log(response.body);
+            });
+
+var request = require("request");
