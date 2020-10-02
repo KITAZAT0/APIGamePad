@@ -1,4 +1,9 @@
-1 - Start basé sur https://auth0.com/blog/node-js-and-express-tutorial-building-and-securing-restful-apis/
+1 - Start basé sur 
+
+https://auth0.com/blog/node-js-and-express-tutorial-building-and-securing-restful-apis/
+
+
+1 - A
 
 création de l'api dans le tableau de bord de Auth0 (sur le site web: https://manage.auth0.com/dashboard/eu/apigamepad/apis)
 
@@ -14,7 +19,7 @@ jwks-rsa: Bibliothèque pour récupérer les clés publiques RSA à partir d'un 
 const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 
-4 - juste avant les routes (post) dans index.js (attention à reverif car pas certain)
+4 - juste avant les routes (post) dans index.js
 
 code relatif:
 
@@ -34,18 +39,4 @@ const checkJwt = jwt({
 
 5 - ajout de l'evaluation
 
-routes(app); devient routes(app.use(checkJwt));
-
-var request = require('request');
-var options = {
-  'method': 'GET',
-    'url': 'http://localhost:3000/tasks/1',
-      'headers': {
-        }
-        };
-        request(options, function (error, response) {
-          if (error) throw new Error(error);
-            console.log(response.body);
-            });
-
-var request = require("request");
+routes(app); devient routes(app.use(checkJwt)); (test avec Postman #voir le fichier recapPostman)

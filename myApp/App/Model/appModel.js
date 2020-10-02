@@ -67,4 +67,39 @@ Task.remove = function (id, result) {
     });
 };
 
+
 module.exports = Task;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Userobjectconstructor
+var User = function (user) {
+    this.user = user.user;
+    this.email = user.email;
+    this.password = user.password;
+};
+
+// méthode createtask
+User.createUser = function (user, callback) {
+    const bcrypt = require('bcrypt');
+
+    const query = 'INSERT INTO user SET ?';
+
+
+  bcrypt.hash(user.password, 10, function(err, hash) {
+    if (err) return callback(err);
+
+    const insert = {
+      password: hash,
+      email: user.email
+    };
+
+    sql.query(query, insert, function(err, results) {
+      if (err) return callback(err);
+      if (results.length === 0) return callback();
+      callback(null);
+    });
+  });
+}
+
+  module.exports = User;
