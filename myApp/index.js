@@ -12,7 +12,6 @@ const express = require('express'),
 port = process.env.PORT || 3000; //port qui sera utilisé pour l'acces à l'api
 
 
-
 app.listen(port);
 
 console.log('RESTful API server started on:' + port); // affichage dans le console log du port

@@ -65,3 +65,11 @@ exports.create_a_user = function (req, res) {
         });
     }
 };
+
+exports.login_a_user = function (req, res) {
+  console.log(req.params.userId);
+  User.getloginUser(req.params.userId, function (err, user) {
+    if (err) res.send(err);
+    res.json(user);
+  });
+};
