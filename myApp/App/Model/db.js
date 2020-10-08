@@ -6,7 +6,7 @@ var con = mysql.createConnection({
     host: "localhost", 
     user: "root", 
     password: "", 
-    database: 'apidb' }); // information de connexion instauré dans phpmyadmin
+    database: 'gamepad' }); // information de connexion instauré dans phpmyadmin
 
 con.connect(function (err) {
     if (err) throw err;

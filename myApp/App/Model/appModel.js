@@ -84,10 +84,12 @@ var User = function (user) {
 
 // méthode createtask
 User.createUser = function (user, callback) {
-  const bcrypt = require("bcrypt");
+  const argon2 = require("argon2");
 
   const query = "INSERT INTO user SET ?";
-  bcrypt.hash(user.password, 10, function (err, hash) {
+  console.log("avant hash");
+  argon2.hash(user.password, {type: argon2.argon2id}, function (err, hash) {
+    console.log("apres hash");
     if (err) return callback(err);
 
     const insert = {

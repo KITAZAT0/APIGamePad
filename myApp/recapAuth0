@@ -40,3 +40,4 @@ const checkJwt = jwt({
 5 - ajout de l'evaluation
 
 routes(app); devient routes(app.use(checkJwt)); (test avec Postman #voir le fichier recapPostman)
+
