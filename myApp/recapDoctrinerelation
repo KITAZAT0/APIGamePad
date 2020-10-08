@@ -1,0 +1,82 @@
+1 - création de clé étrangère sous symfony avec doctrine
+
+
+(table passe_module et table niveau avant de faire la création de clé)
+
+passe_module            |     niveau      
+
+id                      |     id
+date_inscription        |     libelle   
+date_passage            |         
+erreur                  |         
+
+
+il y a plusieurs(many) passe_module dans un niveau(one) (niveau fait référence à la note reçu)
+passe_module many-to-one niveau
+
+passe_module est une table intermediaire pour ne pas avoir de many-to-many !
+
+code relatif:
+
+PS C:\xampp\htdocs\Symfony\GamePad> php bin/console make:entity
+
+ Class name of the entity to create or update (e.g. DeliciousElephant):
+ > PasseModule      //nom de la classe 
+
+ Your entity already exists! So let's add some new fields!
+
+ New property name (press <return> to stop adding fields):
+ > resultat //nom du champs que je rajoute (il va mettre le _id à la fin de celui-ci)
+
+ Field type (enter ? to see all types) [string]:
+ > relation // à quoi va servir le champs
+
+ What class should this entity be related to?:
+ > Niveau //avec quel class PasseModule aura une relation
+
+What type of relationship is this?
+ ------------ -------------------------------------------------------------------------
+  Type         Description
+ ------------ -------------------------------------------------------------------------
+  ManyToOne    Each PasseModule relates to (has) one Niveau. // chaque PasseModule à 1 Niveau
+               Each Niveau can relate to (can have) many PasseModule objects // chaque Niveau peut avoir plusieurs objets PasseModule
+
+  OneToMany    Each PasseModule can relate to (can have) many Niveau objects.
+               Each Niveau relates to (has) one PasseModule
+
+  ManyToMany   Each PasseModule can relate to (can have) many Niveau objects.
+               Each Niveau can also relate to (can also have) many PasseModule objects
+
+  OneToOne     Each PasseModule relates to (has) exactly one Niveau.
+               Each Niveau also relates to (has) exactly one PasseModule.
+ ------------ -------------------------------------------------------------------------
+
+ Relation type? [ManyToOne, OneToMany, ManyToMany, OneToOne]:
+ > ManyToOne
+
+ Is the PasseModule.resultat property allowed to be null (nullable)? (yes/no) [yes]:
+ > no //
+
+ Do you want to add a new property to Niveau so that you can access/update PasseModule objects from 
+it - e.g. $niveau->getPasseModules()? (yes/no) [yes]:
+ > //
+
+ A new property will also be added to the Niveau class so that you can access the related PasseModule objects from it.
+
+ New field name inside Niveau [passeModules]:
+ >
+
+ Do you want to activate orphanRemoval on your relationship?
+ A PasseModule is "orphaned" when it is removed from its related Niveau.
+ e.g. $niveau->removePasseModule($passeModule)
+
+ NOTE: If a PasseModule may *change* from one Niveau to another, answer "no".
+
+ Do you want to automatically delete orphaned App\Entity\PasseModule objects (orphanRemoval)? (yes/no) [no]:
+
+ updated: src/Entity/PasseModule.php
+ updated: src/Entity/Niveau.php
+
+ Add another property? Enter the property name (or press <return> to stop adding fields):
+ > // permet de sortir de la console
+
