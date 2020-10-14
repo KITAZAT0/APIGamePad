@@ -274,7 +274,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 var routes = require('./app/routes/approutes');//importing route
-routes(app);//register the 
+routes(app);
 
 14 - Démarrer mySQL.
 
@@ -283,7 +283,7 @@ Lancer votre serveur node:
 $ npx nodemon server
 
 Cela démarrera le serveur et toute modification apportée au code redémarrera le serveur
-Ou ($ node index.js, ceci démarrera le serveur en utilisant directement node)
+Ou ($ node index.js, ceci démarrera le serveur en utilisant directement le fichier cible sans rechargement à chaque modif)
 
 15 - dans postman
 

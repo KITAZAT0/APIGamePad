@@ -83,58 +83,70 @@ var User = function (user) {
 };
 
 // méthode createtask
+
 User.createUser = function (user, callback) {
-  const argon2 = require("argon2");
-
-  const query = "INSERT INTO user SET ?";
-  console.log("avant hash");
-  argon2.hash(user.password, {type: argon2.argon2id}, function (err, hash) {
-    console.log("apres hash");
-    if (err) return callback(err);
-
-    const insert = {
-      username: user.username,
-      password: hash,
-      email: user.email,
-    };
-
-    sql.query(query, insert, function (err, results) {
-      if (err) return callback(err);
-      if (results.length === 0) return callback();
-      callback(null);
-    });
-  });
-};
-
-User.getloginUser = function (email, password, callback) {
+  console.log("valeur de user dans la fonction createUser : " + user);
+  
   const bcrypt = require("bcrypt");
 
-  const hash = { password: hash };
+  const query = "INSERT INTO user SET ?";
+  console.log("contenu de la const query : " + query);
 
-  const query = "SELECT id, username, email, password FROM user WHERE email = ?";
+  console.log("avant hash");
+    bcrypt.hash(user.password, 10, function (err,hash) {
+      console.log("apres hash");
+      if (err) return callback(err);
 
-  bcrypt.hash(user.password, 10, function (err, hash) {
-    if (err) return callback(err);
+      const data = {
+        username: user.username,
+        password: hash,
+        email: user.email,
+        roles: "[]",
+      };
+      console.log("contenu de la const data : " + data);
+      sql.query(query, data, function (err, results) {
+        if (err) return callback(err);
+        if (results.length === 0) return callback();
+        callback(null);
+      });
+    });
+};
 
-    sql.query(query, [email], function (err, results) {
+User.loginUser = function (user, callback) {
+  
+
+  const bcrypt = require("bcrypt");
+
+  const query =
+    "SELECT  email, password FROM user WHERE email = ?";
+    console.log("contenu de la const query : " + query);
+
+
+    sql.query(query, [user.email], function (err, results) { //results renvoi le contenu du callback 
+
       if (err) return callback(err);
       if (results.length === 0)
-        return callback(new WrongUsernameOrPasswordError(email));
-      const user = results[0];
+        return callback(new WrongUsernameOrPasswordError(user.email));
+      const user_bdd = results[0]; //stockage du résultat de ma requete mysql
 
-      bcrypt.compare(hash, user.password, function (err, isValid) {
-        if (err || !isValid)
-          return callback(err || new WrongUsernameOrPasswordError(email));
+        console.log('form : ' + user.password); //password venant de mon formulaire
+        console.log('bdd : ' + user_bdd.password); //pasword venant de la bdd (crypté en bcrypt)
 
-        callback(null, {
-          user_id: user.id.toString(),
+      bcrypt.compare( user.password, user_bdd.password,function (err, isValid) { //compare de bcrypt va faire la comparaison du password du formulaire avec le password de la bdd
+
+        if (err || !isValid) // si erreur ou différent de valide alors je retourne l'erreur Wrong Username or Password
+          return callback(err || new WrongUsernameOrPasswordError(user.email));
+
+       callback(null, {
           username: user.username,
           email: user.email,
-          password: user.password
+          password: user.password,
+          "compte valide ?":('Compte valide !'),
         });
       });
     });
-  });
-};
+    console.log("valeur de user dans la fonction loginUser : " + user);
+  }
+
 
 module.exports = User;

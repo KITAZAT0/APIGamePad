@@ -1,0 +1,23 @@
+1 - création de la variable User qui contient le appModal.js 
+
+var User = require('../model/appModel.js');
+
+2.a - ajout du controller create_a_user
+
+exports.create_a_user = function (req, res) {
+    //console.log(req.body);
+    var new_user = new User(req.body);
+
+    //handlesnullerror
+    if (!new_user.email || !new_user.password) {
+        res.password(400).send({ error: true, message: 'Please provide email/password' });
+    } else {
+        User.createUser(new_user, function (err, user) {
+            if (err) res.send(err);
+            res.json(user);
+        });
+    }
+};
+
+2.b - ajout du controller login_a_user
+
