@@ -158,21 +158,54 @@ User.loginUser = function (user, callback) {
 
 //methode updateUser
 
-User.updateUser = function (email, user, result) {
+User.updateUser = function (user, result) {
   const queryselect =
     "SELECT  email, username, entreprise, logo, presentation, adresse_rue, adresse_code, adresse_ville, internet FROM user WHERE email = ?";
 
-  const queryupdate = "UPDATE user SET entreprise = ?,logo = ?, presentation = ?, adresse_rue = ?,adresse_code = ?,adresse_ville = ?,internet = ? WHERE email = ?";
+  sql.query(
+    queryselect,
+    [
+      user.entreprise,
+      user.logo,
+      user.presentation,
+      user.adresse_rue,
+      user.adresse_code,
+      user.adresse_ville,
+      user.internet,
+      user.email,
+    ],
+    function (err, res) {
+      if (err) {
+        console.log("error:", err);
+        result(null, err);
+      } else {
+        const queryupdate =
+          "UPDATE user SET entreprise = ?,logo = ?, presentation = ?, adresse_rue = ?,adresse_code = ?,adresse_ville = ?,internet = ? WHERE email = ?";
 
-  sql.query(queryupdate, [user.entreprise, user.logo, user.presentation, user.adresse_rue, user.adresse_code, user.adresse_ville, user.internet, user.email], function (err, res) {
-    if (err) {
-      console.log("error:", err);
-      result(null, err);
-    } else {
-      result(null, res);
+        sql.query(
+          queryupdate,
+          [
+            user.entreprise,
+            user.logo,
+            user.presentation,
+            user.adresse_rue,
+            user.adresse_code,
+            user.adresse_ville,
+            user.internet,
+            user.email,
+          ],
+          function (err, res) {
+            if (err) {
+              console.log("error:", err);
+              result(null, err);
+            } else {
+              result(null, res);
+            }
+          }
+        );
+      }
     }
-  });
+  );
 };
-
 
 module.exports = User;
