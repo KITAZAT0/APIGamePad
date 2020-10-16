@@ -4,6 +4,13 @@ var User = require('../model/appModel.js');
 
 2.a - ajout du controller create_a_user
 
+le controller create_a_user traite la requete venant de la route qui lui est attribué 
+app
+    .route("/user/create")
+    .post(Controller.create_a_user);)
+
+code relatif:
+
 exports.create_a_user = function (req, res) {
     //console.log(req.body);
     var new_user = new User(req.body);
@@ -20,4 +27,22 @@ exports.create_a_user = function (req, res) {
 };
 
 2.b - ajout du controller login_a_user
+
+exports.login_a_user = function (req, res) {
+  // req = request et res = response
+  //console.log(req.params.userId);
+  var login_user = new User(req.body);
+
+  if (!login_user.email || !login_user.password) {
+    res
+      .password(400)
+      .send({ error: true, message: "Please provide email/password" });
+  } else {
+    User.loginUser(login_user, function (err, user) {
+      if (err) res.send(err);
+      res.json(user);
+    });
+  }
+};
+
 

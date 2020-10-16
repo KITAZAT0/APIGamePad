@@ -19,4 +19,7 @@ module.exports = function (app) {
   app
     .route("/user/login")
     .post(Controller.login_a_user);
+  app
+    .route("/user/update")
+    .put(Controller.update_a_user);
 };

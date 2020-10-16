@@ -87,3 +87,13 @@ exports.login_a_user = function (req, res) {
     });
   }
 };
+
+exports.update_a_user = function (req, res) {
+
+    var update_user = new User(req.body);
+
+  User.updateUser(update_user, new User(req.body), function (err, user) {
+    if (err) res.send(err);
+    res.json(user);
+  });
+};
