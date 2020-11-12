@@ -9,6 +9,7 @@ console.log('todo list RESTful API server started on: ' + port); */
 const express = require('express'),
     app = express(),
     bodyParser = require('body-parser');
+    const cors = require("cors");
 port = process.env.PORT || 3000; //port qui sera utilisé pour l'acces à l'api
 
 
