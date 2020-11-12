@@ -19,6 +19,7 @@ console.log('RESTful API server started on:' + port); // affichage dans le conso
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.options("*", cors());
 
 const jwt = require('express-jwt');
 
