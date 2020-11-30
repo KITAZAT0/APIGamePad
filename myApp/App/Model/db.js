@@ -4,9 +4,9 @@ var mysql = require('mysql');
 
 var con = mysql.createConnection({ 
     host: "localhost", 
-    user: "root", 
-    password: "", 
-    database: 'gamepad' }); // information de connexion instauré dans phpmyadmin
+    user: "gamepad", 
+    password: "DWWM2020", 
+    database: "gamepad" }); // information de connexion instauré dans phpmyadmin
 
 con.connect(function (err) {
     if (err) throw err;

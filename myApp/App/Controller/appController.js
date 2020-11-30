@@ -1,5 +1,5 @@
 "use strict"; //fonctions qui serviront à nos routes
-// les fonctions ici utilsent les methodes task de appModel.js
+// les fonctions ici utilsent les methodes de appModel.js
 
 
 var User = require("../model/appModel.js");
